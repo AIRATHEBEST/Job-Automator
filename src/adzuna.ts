@@ -1,4 +1,4 @@
-const API_PROXY_URL = import.meta.env.VITE_API_PROXY_URL || 'http://localhost:3001';
+const API_PROXY_URL = import.meta.env.VITE_API_PROXY_URL || '';
 
 export interface AdzunaJob {
   id: string;
