@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Briefcase, LogOut, User, LayoutDashboard, BarChart } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from './AuthContext';
 import NotificationBell from './NotificationBell';
 
 export default function Navbar() {

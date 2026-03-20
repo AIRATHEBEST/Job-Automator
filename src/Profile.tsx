@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Layout from '../components/Layout';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from './AuthContext';
 import { User, Mail, Phone, Briefcase, Award, Save } from 'lucide-react';
 
 export default function Profile() {

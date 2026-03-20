@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Bell, Check, CheckCheck } from 'lucide-react';
-import { useNotifications } from '../contexts/NotificationContext';
+import { useNotifications } from './NotificationContext';
 import { formatDistanceToNow } from 'date-fns';
 
 export default function NotificationBell() {

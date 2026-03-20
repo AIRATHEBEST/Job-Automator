@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
-import { getStoredUser } from '../lib/auth';
+import { getStoredUser } from './auth';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -20,7 +20,7 @@ export default function ProtectedRoute({ children, requiredRole }: ProtectedRout
     if (user) {
       setIsAuthenticated(true);
       // Check role from database
-      const { query } = await import('../lib/db');
+      const { query } = await import('./db');
       const result = await query('SELECT role, is_admin FROM profiles WHERE id = $1', [user.userId]);
       if (result.length > 0) {
         const profile = result[0];

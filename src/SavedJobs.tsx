@@ -1,5 +1,5 @@
 import { Heart, MapPin, DollarSign, Briefcase, ExternalLink, Trash2 } from 'lucide-react';
-import { useSavedJobs } from '../contexts/SavedJobsContext';
+import { useSavedJobs } from './SavedJobsContext';
 
 export default function SavedJobs() {
   const { savedJobs, loading, unsaveJob } = useSavedJobs();

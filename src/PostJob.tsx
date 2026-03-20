@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Briefcase, DollarSign, MapPin, Tag, FileText, Plus, X } from 'lucide-react';
-import { query } from '../lib/db';
-import { getStoredUser } from '../lib/auth';
+import { query } from './db';
+import { getStoredUser } from './auth';
 
 export default function PostJob() {
   const navigate = useNavigate();

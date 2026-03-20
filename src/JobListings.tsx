@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Layout from '../components/Layout';
-import { useJobs } from '../contexts/JobContext';
+import { useJobs } from './JobContext';
 import { Link } from 'react-router-dom';
 import { Search, MapPin, Briefcase, DollarSign, Filter } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';

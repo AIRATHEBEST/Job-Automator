@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Briefcase, Users, Eye, TrendingUp, Edit, Trash2 } from 'lucide-react';
-import { query } from '../lib/db';
-import { getStoredUser } from '../lib/auth';
-import { JobPosting } from '../types/database';
+import { query } from './db';
+import { getStoredUser } from './auth';
+import { JobPosting } from './database';
 
 export default function RecruiterDashboard() {
   const [jobs, setJobs] = useState<JobPosting[]>([]);

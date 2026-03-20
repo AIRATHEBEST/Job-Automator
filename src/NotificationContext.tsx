@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Notification } from '../types/database';
-import { query } from '../lib/db';
-import { getStoredUser } from '../lib/auth';
+import { Notification } from './database';
+import { query } from './db';
+import { getStoredUser } from './auth';
 
 interface NotificationContextType {
   notifications: Notification[];

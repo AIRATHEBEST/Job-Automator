@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
-import { supabase } from '../lib/supabase';
-import { useJobs } from '../contexts/JobContext';
+import { supabase } from './supabase';
+import { useJobs } from './JobContext';
 import { Plus, Users, Briefcase, FileText, TrendingUp } from 'lucide-react';
 
 export default function AdminDashboard() {

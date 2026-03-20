@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Briefcase, MapPin, DollarSign, Search, Filter, Building2, ExternalLink, Heart, Globe } from 'lucide-react';
-import { useJobs } from '../contexts/JobContext';
-import { useSavedJobs } from '../contexts/SavedJobsContext';
-import { SUPPORTED_COUNTRIES } from '../lib/adzuna';
-import type { AdzunaJob } from '../lib/adzuna';
+import { useJobs } from './JobContext';
+import { useSavedJobs } from './SavedJobsContext';
+import { SUPPORTED_COUNTRIES } from './adzuna';
+import type { AdzunaJob } from './adzuna';
 
 export default function Jobs() {
   const { jobs, loading, fetchJobs, applyForJob, hasApplied, totalJobs } = useJobs();

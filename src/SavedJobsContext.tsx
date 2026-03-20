@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
-import { query } from '../lib/db';
-import type { AdzunaJob } from '../lib/adzuna';
+import { query } from './db';
+import type { AdzunaJob } from './adzuna';
 
 interface SavedJob {
   id: string;

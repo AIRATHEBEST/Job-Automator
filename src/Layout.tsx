@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from './AuthContext';
 import { Briefcase, LayoutDashboard, FileText, User, LogOut, Plus, Shield } from 'lucide-react';
 
 interface LayoutProps {

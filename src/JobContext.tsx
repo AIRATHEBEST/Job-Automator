@@ -1,8 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { sql } from '../lib/db';
-import { searchJobs, type AdzunaJob, type AdzunaSearchParams, formatJobType, formatSalaryRange } from '../lib/adzuna';
+import { sql } from './db';
+import { searchJobs, type AdzunaJob, type AdzunaSearchParams, formatJobType, formatSalaryRange } from './adzuna';
 import { useAuth } from './AuthContext';
-import type { Application } from '../types/database';
+import type { Application } from './database';
 
 interface JobContextType {
   jobs: AdzunaJob[];

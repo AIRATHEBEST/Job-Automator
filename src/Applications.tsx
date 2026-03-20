@@ -1,4 +1,4 @@
-import { useJobs } from '../contexts/JobContext';
+import { useJobs } from './JobContext';
 import { Briefcase, MapPin, DollarSign, Calendar, ExternalLink } from 'lucide-react';
 import { format } from 'date-fns';
 

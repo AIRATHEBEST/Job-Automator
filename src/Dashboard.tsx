@@ -1,6 +1,6 @@
 import Layout from '../components/Layout';
-import { useAuth } from '../contexts/AuthContext';
-import { useJobs } from '../contexts/JobContext';
+import { useAuth } from './AuthContext';
+import { useJobs } from './JobContext';
 import { Link } from 'react-router-dom';
 import { Briefcase, FileText, TrendingUp, Clock, MapPin, DollarSign } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';

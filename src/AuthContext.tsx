@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { sql } from '../lib/db';
-import { hashPassword, verifyPassword, generateToken, getStoredToken, setStoredToken, removeStoredToken, verifyToken, TokenPayload } from '../lib/auth';
-import type { Profile } from '../types/database';
+import { sql } from './db';
+import { hashPassword, verifyPassword, generateToken, getStoredToken, setStoredToken, removeStoredToken, verifyToken, TokenPayload } from './auth';
+import type { Profile } from './database';
 
 interface AuthContextType {
   user: TokenPayload | null;
