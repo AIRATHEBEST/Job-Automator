@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './AuthContext';
 import { SavedJobsProvider } from './SavedJobsContext';
 import { NotificationProvider } from './NotificationContext';
@@ -24,6 +25,13 @@ function App() {
           <NotificationProvider>
             <JobProvider>
               <div className="min-h-screen bg-gray-900">
+                <Toaster position="top-right" toastOptions={{
+                  style: {
+                    background: '#262626',
+                    color: '#fff',
+                    border: '1px solid #2F2F2F',
+                  },
+                }} />
                 <Navbar />
                 <Routes>
                   <Route path="/" element={<JobListings />} />
