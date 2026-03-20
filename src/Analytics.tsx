@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, Users, Briefcase, CheckCircle, XCircle, Clock } from 'lucide-react';
-import { query } from './db';
+import sql from './db';
+const query = sql;
 import { formatDistanceToNow } from 'date-fns';
 
 interface Stats {

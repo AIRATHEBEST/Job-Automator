@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { sql } from './db';
+import sql from './db';
 import { hashPassword, verifyPassword, generateToken, getStoredToken, setStoredToken, removeStoredToken, verifyToken, TokenPayload } from './auth';
 import type { Profile } from './database';
 

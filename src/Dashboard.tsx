@@ -1,4 +1,4 @@
-import Layout from '../components/Layout';
+import Layout from './Layout';
 import { useAuth } from './AuthContext';
 import { useJobs } from './JobContext';
 import { Link } from 'react-router-dom';

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Layout from '../components/Layout';
+import Layout from './Layout';
 import { useJobs } from './JobContext';
 import { supabase } from './supabase';
 import { MapPin, Briefcase, DollarSign, Calendar, CheckCircle, Building, ArrowLeft } from 'lucide-react';

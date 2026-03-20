@@ -1,20 +1,19 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
-import { SavedJobsProvider } from './contexts/SavedJobsContext';
-import { NotificationProvider } from './contexts/NotificationContext';
-import Navbar from './components/Navbar';
-import LandingPage from './pages/LandingPage';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import JobListings from './pages/JobListings';
-import JobSeekerDashboard from './pages/JobSeekerDashboard';
-import RecruiterDashboard from './pages/RecruiterDashboard';
-import PostJob from './pages/PostJob';
-import AdminDashboard from './pages/AdminDashboard';
-import Analytics from './pages/Analytics';
-import Profile from './pages/Profile';
-import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './AuthContext';
+import { SavedJobsProvider } from './SavedJobsContext';
+import { NotificationProvider } from './NotificationContext';
+import Navbar from './Navbar';
+import Login from './Login';
+import Register from './Register';
+import JobListings from './JobListings';
+import Dashboard from './Dashboard';
+import RecruiterDashboard from './RecruiterDashboard';
+import PostJob from './PostJob';
+import AdminDashboard from './AdminDashboard';
+import Analytics from './Analytics';
+import Profile from './Profile';
+import ProtectedRoute from './ProtectedRoute';
 
 function App() {
   return (
@@ -25,7 +24,7 @@ function App() {
             <div className="min-h-screen bg-gray-900">
               <Navbar />
               <Routes>
-                <Route path="/" element={<LandingPage />} />
+                <Route path="/" element={<JobListings />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/jobs" element={<JobListings />} />
@@ -34,7 +33,7 @@ function App() {
                   path="/dashboard"
                   element={
                     <ProtectedRoute>
-                      <JobSeekerDashboard />
+                      <Dashboard />
                     </ProtectedRoute>
                   }
                 />

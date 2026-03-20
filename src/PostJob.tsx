@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Briefcase, DollarSign, MapPin, Tag, FileText, Plus, X } from 'lucide-react';
-import { query } from './db';
+import sql from './db';
+const query = sql;
 import { getStoredUser } from './auth';
 
 export default function PostJob() {

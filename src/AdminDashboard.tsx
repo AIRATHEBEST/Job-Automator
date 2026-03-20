@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Layout from '../components/Layout';
+import Layout from './Layout';
 import { supabase } from './supabase';
 import { useJobs } from './JobContext';
 import { Plus, Users, Briefcase, FileText, TrendingUp } from 'lucide-react';

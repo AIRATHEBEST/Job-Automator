@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
-import { query } from './db';
+import sql from './db';
+const query = sql;
 import type { AdzunaJob } from './adzuna';
 
 interface SavedJob {

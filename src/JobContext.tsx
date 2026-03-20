@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { sql } from './db';
+import sql from './db';
 import { searchJobs, type AdzunaJob, type AdzunaSearchParams, formatJobType, formatSalaryRange } from './adzuna';
 import { useAuth } from './AuthContext';
 import type { Application } from './database';

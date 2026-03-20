@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Layout from '../components/Layout';
+import Layout from './Layout';
 import { useJobs } from './JobContext';
 import { Link } from 'react-router-dom';
 import { Search, MapPin, Briefcase, DollarSign, Filter } from 'lucide-react';

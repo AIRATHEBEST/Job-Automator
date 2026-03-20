@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Briefcase, Users, Eye, TrendingUp, Edit, Trash2 } from 'lucide-react';
-import { query } from './db';
+import sql from './db';
+const query = sql;
 import { getStoredUser } from './auth';
 import { JobPosting } from './database';
 
