@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { getStoredUser } from './auth';
+import sql from './db';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -12,24 +13,27 @@ export default function ProtectedRoute({ children, requiredRole }: ProtectedRout
   const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
+    const checkAuth = async () => {
+      const user = await getStoredUser();
+      if (user) {
+        setIsAuthenticated(true);
+        try {
+          // Check role from database
+          const result = await sql`SELECT role, is_admin FROM profiles WHERE id = ${user.userId}`;
+          if (result.length > 0) {
+            const profile = result[0] as any;
+            setUserRole(profile.is_admin ? 'admin' : profile.role);
+          }
+        } catch (error) {
+          console.error('Auth check failed:', error);
+          setIsAuthenticated(false);
+        }
+      } else {
+        setIsAuthenticated(false);
+      }
+    };
     checkAuth();
   }, []);
-
-  const checkAuth = async () => {
-    const user = await getStoredUser();
-    if (user) {
-      setIsAuthenticated(true);
-      // Check role from database
-      const { query } = await import('./db');
-      const result = await query('SELECT role, is_admin FROM profiles WHERE id = $1', [user.userId]);
-      if (result.length > 0) {
-        const profile = result[0];
-        setUserRole(profile.is_admin ? 'admin' : profile.role);
-      }
-    } else {
-      setIsAuthenticated(false);
-    }
-  };
 
   if (isAuthenticated === null) {
     return (

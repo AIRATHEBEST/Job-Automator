@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, Users, Briefcase, CheckCircle, XCircle, Clock } from 'lucide-react';
 import sql from './db';
-const query = sql;
 import { formatDistanceToNow } from 'date-fns';
 
 interface Stats {
@@ -36,7 +35,7 @@ export default function Analytics() {
   const fetchAnalytics = async () => {
     try {
       // Fetch application stats
-      const applicationStats = await query(`
+      const applicationStats = await sql`
         SELECT 
           COUNT(*) as total,
           COUNT(*) FILTER (WHERE status = 'pending') as pending,
@@ -44,21 +43,21 @@ export default function Analytics() {
           COUNT(*) FILTER (WHERE status = 'accepted') as accepted,
           COUNT(*) FILTER (WHERE status = 'rejected') as rejected
         FROM applications
-      `);
+      `;
 
       // Fetch job stats
-      const jobStats = await query(`
+      const jobStats = await sql`
         SELECT 
           COUNT(*) as total,
           COUNT(*) FILTER (WHERE status = 'active') as active
-        FROM job_postings
-      `);
+        FROM jobs
+      `;
 
       // Fetch user count
-      const userStats = await query('SELECT COUNT(*) as total FROM profiles');
+      const userStats = await sql`SELECT COUNT(*) as total FROM profiles`;
 
       // Fetch recent applications
-      const recent = await query(`
+      const recent = await sql`
         SELECT 
           a.*,
           p.full_name,
@@ -67,7 +66,7 @@ export default function Analytics() {
         JOIN profiles p ON a.applicant_id = p.id
         ORDER BY a.applied_at DESC
         LIMIT 10
-      `);
+      `;
 
       setStats({
         totalApplications: parseInt(applicationStats[0].total),

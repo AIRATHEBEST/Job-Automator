@@ -5,11 +5,14 @@ const JWT_SECRET = new TextEncoder().encode(
   import.meta.env.VITE_JWT_SECRET || 'your-secret-key-change-in-production'
 );
 
-export interface JWTPayload {
+export interface TokenPayload {
   userId: string;
   email: string;
-  role: string;
+  isAdmin: boolean;
 }
+
+// Keep JWTPayload for backward compatibility if needed, but standardize on TokenPayload
+export interface JWTPayload extends TokenPayload {}
 
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 10);
@@ -19,7 +22,7 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
   return bcrypt.compare(password, hash);
 }
 
-export async function generateToken(payload: JWTPayload): Promise<string> {
+export async function generateToken(payload: TokenPayload): Promise<string> {
   const jwt = await new jose.SignJWT({ ...payload })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
@@ -29,10 +32,10 @@ export async function generateToken(payload: JWTPayload): Promise<string> {
   return jwt;
 }
 
-export async function verifyToken(token: string): Promise<JWTPayload | null> {
+export async function verifyToken(token: string): Promise<TokenPayload | null> {
   try {
     const { payload } = await jose.jwtVerify(token, JWT_SECRET);
-    return payload as JWTPayload;
+    return payload as unknown as TokenPayload;
   } catch (error) {
     console.error('Token verification failed:', error);
     return null;
@@ -51,7 +54,7 @@ export function removeStoredToken(): void {
   localStorage.removeItem('token');
 }
 
-export function getStoredUser(): JWTPayload | null {
+export function getStoredUser(): TokenPayload | null {
   const token = getStoredToken();
   if (!token) return null;
   try {

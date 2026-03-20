@@ -5,18 +5,18 @@ import { useAuth } from './AuthContext';
 import NotificationBell from './NotificationBell';
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
+    signOut();
     navigate('/');
   };
 
   const getDashboardLink = () => {
     if (!user) return '/';
     if (user.isAdmin) return '/admin';
-    if (user.role === 'recruiter') return '/recruiter-dashboard';
+    if ((user as any).role === 'recruiter') return '/recruiter-dashboard';
     return '/dashboard';
   };
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Layout from './Layout';
 import { useAuth } from './AuthContext';
 import { User, Mail, Phone, Briefcase, Award, Save } from 'lucide-react';
@@ -37,25 +37,25 @@ export default function Profile() {
     <Layout>
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-text mb-2">My Profile</h1>
-          <p className="text-textSecondary">Manage your account information</p>
+          <h1 className="text-3xl font-bold text-white mb-2">My Profile</h1>
+          <p className="text-gray-400">Manage your account information</p>
         </div>
 
-        <div className="bg-surface border border-border rounded-2xl p-8">
+        <div className="bg-gray-800 border border-gray-700 rounded-2xl p-8">
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center space-x-4">
-              <div className="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center">
                 <User className="w-10 h-10 text-white" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-text">{profile?.full_name || 'User'}</h2>
-                <p className="text-textSecondary">{profile?.email}</p>
+                <h2 className="text-2xl font-bold text-white">{profile?.full_name || 'User'}</h2>
+                <p className="text-gray-400">{profile?.email}</p>
               </div>
             </div>
 
             <button
               onClick={() => setEditing(!editing)}
-              className="px-6 py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg transition-colors"
+              className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors"
             >
               {editing ? 'Cancel' : 'Edit Profile'}
             </button>
@@ -64,65 +64,65 @@ export default function Profile() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-text mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Full Name
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-textSecondary" />
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
                     value={formData.full_name}
                     onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
                     disabled={!editing}
-                    className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg text-text placeholder-textSecondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50"
+                    className="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:opacity-50"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-text mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Email
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-textSecondary" />
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="email"
                     value={profile?.email || ''}
                     disabled
-                    className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg text-text placeholder-textSecondary opacity-50 cursor-not-allowed"
+                    className="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 opacity-50 cursor-not-allowed"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-text mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Phone
                 </label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-textSecondary" />
+                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     disabled={!editing}
-                    className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg text-text placeholder-textSecondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50"
+                    className="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:opacity-50"
                     placeholder="(555) 123-4567"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-text mb-2">
+                <label className="block text-sm font-medium text-white mb-2">
                   Years of Experience
                 </label>
                 <div className="relative">
-                  <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-textSecondary" />
+                  <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="number"
                     value={formData.experience_years}
                     onChange={(e) => setFormData({ ...formData, experience_years: parseInt(e.target.value) || 0 })}
                     disabled={!editing}
-                    className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg text-text placeholder-textSecondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50"
+                    className="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:opacity-50"
                     min="0"
                   />
                 </div>
@@ -130,17 +130,17 @@ export default function Profile() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-text mb-2">
+              <label className="block text-sm font-medium text-white mb-2">
                 Skills (comma-separated)
               </label>
               <div className="relative">
-                <Award className="absolute left-3 top-3 w-5 h-5 text-textSecondary" />
+                <Award className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
                 <textarea
                   value={formData.skills}
                   onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
                   disabled={!editing}
                   rows={4}
-                  className="w-full pl-10 pr-4 py-3 bg-background border border-border rounded-lg text-text placeholder-textSecondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:opacity-50 resize-none"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:opacity-50 resize-none"
                   placeholder="JavaScript, React, Node.js, Python..."
                 />
               </div>
@@ -150,7 +150,7 @@ export default function Profile() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 px-4 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                className="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
               >
                 <Save className="w-5 h-5 mr-2" />
                 {loading ? 'Saving...' : 'Save Changes'}

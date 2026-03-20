@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Briefcase, MapPin, DollarSign, Search, Filter, Building2, ExternalLink, Heart, Globe } from 'lucide-react';
+import { Briefcase, MapPin, DollarSign, Search, Filter, Building2, Heart, Globe } from 'lucide-react';
 import { useJobs } from './JobContext';
 import { useSavedJobs } from './SavedJobsContext';
 import { SUPPORTED_COUNTRIES } from './adzuna';
@@ -26,7 +26,7 @@ export default function Jobs() {
       country: selectedCountry,
       keywords: searchKeywords,
       location: searchLocation,
-      contract_time: filterType,
+      contract_type: filterType,
       salary_min: filterSalaryMin ? parseInt(filterSalaryMin) : undefined,
       results_per_page: 20,
     });
@@ -81,7 +81,7 @@ export default function Jobs() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-900">
+    <div className="min-h-screen bg-gray-900">
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-blue-500 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -92,15 +92,15 @@ export default function Jobs() {
 
       {/* Search Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8">
-        <div className="bg-neutral-800 rounded-lg shadow-xl p-6">
+        <div className="bg-gray-800 rounded-lg shadow-xl p-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="md:col-span-1">
               <div className="relative">
-                <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-5 h-5" />
+                <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <select
                   value={selectedCountry}
                   onChange={(e) => setSelectedCountry(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-neutral-700 border border-neutral-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-white appearance-none cursor-pointer"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-white appearance-none cursor-pointer"
                 >
                   {SUPPORTED_COUNTRIES.map(country => (
                     <option key={country.code} value={country.code}>
@@ -112,27 +112,27 @@ export default function Jobs() {
             </div>
             <div className="md:col-span-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-5 h-5" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type="text"
                   placeholder="Job title, keywords..."
                   value={searchKeywords}
                   onChange={(e) => setSearchKeywords(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  className="w-full pl-10 pr-4 py-3 bg-neutral-700 border border-neutral-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-white placeholder-neutral-400"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-white placeholder-gray-500"
                 />
               </div>
             </div>
             <div className="md:col-span-1">
               <div className="relative">
-                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-5 h-5" />
+                <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type="text"
                   placeholder="Location..."
                   value={searchLocation}
                   onChange={(e) => setSearchLocation(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  className="w-full pl-10 pr-4 py-3 bg-neutral-700 border border-neutral-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-white placeholder-neutral-400"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-white placeholder-gray-500"
                 />
               </div>
             </div>
@@ -145,7 +145,7 @@ export default function Jobs() {
               </button>
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="px-4 py-3 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600 transition-colors"
+                className="px-4 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors"
               >
                 <Filter className="w-5 h-5" />
               </button>
@@ -154,13 +154,13 @@ export default function Jobs() {
 
           {/* Advanced Filters */}
           {showFilters && (
-            <div className="mt-4 pt-4 border-t border-neutral-700 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="mt-4 pt-4 border-t border-gray-700 grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-neutral-300 mb-2">Job Type</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Job Type</label>
                 <select
                   value={filterType}
                   onChange={(e) => setFilterType(e.target.value)}
-                  className="w-full px-4 py-2 bg-neutral-700 border border-neutral-600 rounded-lg focus:ring-2 focus:ring-purple-500 text-white"
+                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 text-white"
                 >
                   <option value="">All Types</option>
                   <option value="full_time">Full-time</option>
@@ -169,20 +169,20 @@ export default function Jobs() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-neutral-300 mb-2">Minimum Salary</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Minimum Salary</label>
                 <input
                   type="number"
                   placeholder="e.g., 50000"
                   value={filterSalaryMin}
                   onChange={(e) => setFilterSalaryMin(e.target.value)}
-                  className="w-full px-4 py-2 bg-neutral-700 border border-neutral-600 rounded-lg focus:ring-2 focus:ring-purple-500 text-white placeholder-neutral-400"
+                  className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-500"
                 />
               </div>
             </div>
           )}
 
           {totalJobs > 0 && (
-            <div className="mt-4 text-neutral-400 text-sm">
+            <div className="mt-4 text-gray-400 text-sm">
               Found {totalJobs.toLocaleString()} jobs in {SUPPORTED_COUNTRIES.find(c => c.code === selectedCountry)?.name}
             </div>
           )}
@@ -194,27 +194,27 @@ export default function Jobs() {
         {loading ? (
           <div className="text-center py-12">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
-            <p className="mt-4 text-neutral-400">Loading jobs...</p>
+            <p className="mt-4 text-gray-400">Loading jobs...</p>
           </div>
         ) : jobs.length === 0 ? (
-          <div className="text-center py-12 bg-neutral-800 rounded-lg">
-            <Briefcase className="w-16 h-16 text-neutral-600 mx-auto mb-4" />
+          <div className="text-center py-12 bg-gray-800 rounded-lg">
+            <Briefcase className="w-16 h-16 text-gray-600 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-white mb-2">No jobs found</h3>
-            <p className="text-neutral-400">Try adjusting your search criteria</p>
+            <p className="text-gray-400">Try adjusting your search criteria</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {jobs.map((job) => (
               <div
                 key={job.id}
-                className="bg-neutral-800 rounded-lg p-6 hover:shadow-xl transition-all border border-neutral-700 hover:border-purple-500/50"
+                className="bg-gray-800 rounded-lg p-6 hover:shadow-xl transition-all border border-gray-700 hover:border-purple-500/50"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold text-white mb-2">{job.title}</h3>
-                    <div className="flex items-center gap-2 text-neutral-300 mb-2">
+                    <div className="flex items-center gap-2 text-gray-300 mb-2">
                       <Building2 className="w-4 h-4" />
-                      <span>{job.company.display_name}</span>
+                      <span>{typeof job.company === 'string' ? job.company : job.company.display_name}</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -223,7 +223,7 @@ export default function Jobs() {
                       className={`p-2 rounded-lg transition-colors ${
                         isSaved(job.id)
                           ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30'
-                          : 'bg-neutral-700 text-neutral-400 hover:bg-neutral-600'
+                          : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
                       }`}
                       title={isSaved(job.id) ? 'Remove from saved' : 'Save for later'}
                     >
@@ -236,17 +236,17 @@ export default function Jobs() {
                 </div>
 
                 <div className="space-y-2 mb-4">
-                  <div className="flex items-center gap-2 text-neutral-400">
+                  <div className="flex items-center gap-2 text-gray-400">
                     <MapPin className="w-4 h-4" />
-                    <span>{job.location.display_name}</span>
+                    <span>{typeof job.location === 'string' ? job.location : job.location.display_name}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-neutral-400">
+                  <div className="flex items-center gap-2 text-gray-400">
                     <DollarSign className="w-4 h-4" />
                     <span>{formatSalary(job)}</span>
                   </div>
                 </div>
 
-                <p className="text-neutral-300 mb-4 line-clamp-3">
+                <p className="text-gray-300 mb-4 line-clamp-3">
                   {job.description.replace(/<[^>]*>/g, '').substring(0, 200)}...
                 </p>
 
@@ -259,21 +259,12 @@ export default function Jobs() {
                     disabled={hasApplied(job.id)}
                     className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
                       hasApplied(job.id)
-                        ? 'bg-neutral-700 text-neutral-400 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-purple-600 to-blue-500 text-white hover:from-purple-700 hover:to-blue-600'
+                        ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                        : 'bg-purple-600 text-white hover:bg-purple-700'
                     }`}
                   >
-                    {hasApplied(job.id) ? 'Already Applied' : 'Apply Now'}
+                    {hasApplied(job.id) ? 'Applied' : 'Apply Now'}
                   </button>
-                  <a
-                    href={job.redirect_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600 transition-colors flex items-center gap-2"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    View
-                  </a>
                 </div>
               </div>
             ))}
@@ -284,39 +275,35 @@ export default function Jobs() {
       {/* Apply Modal */}
       {showApplyModal && selectedJob && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-neutral-800 rounded-lg max-w-2xl w-full p-6">
+          <div className="bg-gray-800 border border-gray-700 rounded-2xl p-8 max-w-2xl w-full">
             <h2 className="text-2xl font-bold text-white mb-4">Apply for {selectedJob.title}</h2>
-            <p className="text-neutral-300 mb-4">at {selectedJob.company.display_name}</p>
-            
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-neutral-300 mb-2">
+            <div className="mb-6">
+              <label htmlFor="coverLetter" className="block text-sm font-medium text-gray-300 mb-2">
                 Cover Letter
               </label>
               <textarea
+                id="coverLetter"
                 value={coverLetter}
                 onChange={(e) => setCoverLetter(e.target.value)}
-                rows={6}
-                className="w-full px-4 py-2 bg-neutral-700 border border-neutral-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-white placeholder-neutral-400"
-                placeholder="Tell us why you're a great fit for this position..."
+                rows={8}
+                className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                placeholder="Tell us why you're interested in this position..."
               />
             </div>
 
             <div className="flex gap-4">
               <button
-                onClick={handleApply}
-                disabled={applying}
-                className="flex-1 bg-gradient-to-r from-purple-600 to-blue-500 text-white px-6 py-3 rounded-lg font-medium hover:from-purple-700 hover:to-blue-600 transition-all disabled:opacity-50"
-              >
-                {applying ? 'Submitting...' : 'Submit Application'}
-              </button>
-              <button
-                onClick={() => {
-                  setShowApplyModal(false);
-                  setCoverLetter('');
-                }}
-                className="px-6 py-3 bg-neutral-700 text-white rounded-lg hover:bg-neutral-600 transition-colors"
+                onClick={() => setShowApplyModal(false)}
+                className="flex-1 px-6 py-3 bg-gray-900 border border-gray-700 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
               >
                 Cancel
+              </button>
+              <button
+                onClick={handleApply}
+                disabled={applying || !coverLetter.trim()}
+                className="flex-1 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {applying ? 'Submitting...' : 'Submit Application'}
               </button>
             </div>
           </div>

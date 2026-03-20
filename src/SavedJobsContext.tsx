@@ -1,7 +1,6 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
 import sql from './db';
-const query = sql;
 import type { AdzunaJob } from './adzuna';
 
 interface SavedJob {
@@ -40,11 +39,12 @@ export function SavedJobsProvider({ children }: { children: ReactNode }) {
 
     setLoading(true);
     try {
-      const results = await query(
-        'SELECT * FROM saved_jobs WHERE user_id = $1 ORDER BY saved_at DESC',
-        [user.id]
-      );
-      setSavedJobs(results as SavedJob[]);
+      const results = await sql`
+        SELECT * FROM saved_jobs 
+        WHERE user_id = ${user.userId} 
+        ORDER BY saved_at DESC
+      `;
+      setSavedJobs(results as unknown as SavedJob[]);
     } catch (error) {
       console.error('Error fetching saved jobs:', error);
     } finally {
@@ -76,21 +76,14 @@ export function SavedJobsProvider({ children }: { children: ReactNode }) {
                      job.contract_time === 'part_time' ? 'Part-time' :
                      job.contract_type === 'contract' ? 'Contract' : 'Full-time';
 
-      await query(
-        `INSERT INTO saved_jobs (user_id, job_id, job_title, company, location, job_type, salary_range, job_url)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-         ON CONFLICT (user_id, job_id) DO NOTHING`,
-        [
-          user.id,
-          job.id,
-          job.title,
-          job.company.display_name,
-          job.location.display_name,
-          jobType,
-          salaryRange,
-          job.redirect_url
-        ]
-      );
+      const companyName = typeof job.company === 'string' ? job.company : job.company.display_name;
+      const locationName = typeof job.location === 'string' ? job.location : job.location.display_name;
+
+      await sql`
+        INSERT INTO saved_jobs (id, user_id, job_id, job_title, company, location, job_type, salary_range, job_url)
+        VALUES (${crypto.randomUUID()}, ${user.userId}, ${job.id}, ${job.title}, ${companyName}, ${locationName}, ${jobType}, ${salaryRange}, ${job.redirect_url})
+        ON CONFLICT (user_id, job_id) DO NOTHING
+      `;
 
       await fetchSavedJobs();
     } catch (error) {
@@ -103,10 +96,10 @@ export function SavedJobsProvider({ children }: { children: ReactNode }) {
     if (!user) throw new Error('Must be logged in');
 
     try {
-      await query(
-        'DELETE FROM saved_jobs WHERE user_id = $1 AND job_id = $2',
-        [user.id, jobId]
-      );
+      await sql`
+        DELETE FROM saved_jobs 
+        WHERE user_id = ${user.userId} AND job_id = ${jobId}
+      `;
 
       await fetchSavedJobs();
     } catch (error) {

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Briefcase, Users, Eye, TrendingUp, Edit, Trash2 } from 'lucide-react';
 import sql from './db';
-const query = sql;
 import { getStoredUser } from './auth';
 import { JobPosting } from './database';
 
@@ -26,29 +25,27 @@ export default function RecruiterDashboard() {
       if (!user) return;
 
       // Get recruiter ID
-      const recruiterResult = await query(
-        'SELECT id FROM recruiters WHERE profile_id = $1',
-        [user.userId]
-      );
+      const recruiterResult = await sql`
+        SELECT id FROM recruiters WHERE profile_id = ${user.userId}
+      `;
       
       if (recruiterResult.length === 0) {
         setLoading(false);
         return;
       }
 
-      const recruiterId = recruiterResult[0].id;
+      const recruiterId = recruiterResult[0].id as string;
 
       // Fetch jobs
-      const jobsResult = await query(
-        'SELECT * FROM job_postings WHERE recruiter_id = $1 ORDER BY created_at DESC',
-        [recruiterId]
-      ) as JobPosting[];
+      const jobsResult = await sql`
+        SELECT * FROM job_postings WHERE recruiter_id = ${recruiterId} ORDER BY created_at DESC
+      ` as unknown as JobPosting[];
 
       setJobs(jobsResult);
 
       // Calculate stats
-      const totalViews = jobsResult.reduce((sum, job) => sum + job.views, 0);
-      const totalApplications = jobsResult.reduce((sum, job) => sum + job.applications_count, 0);
+      const totalViews = jobsResult.reduce((sum, job) => sum + (job.views || 0), 0);
+      const totalApplications = jobsResult.reduce((sum, job) => sum + (job.applications_count || 0), 0);
       const activeJobs = jobsResult.filter(job => job.status === 'active').length;
 
       setStats({
@@ -68,7 +65,7 @@ export default function RecruiterDashboard() {
     if (!confirm('Are you sure you want to delete this job posting?')) return;
 
     try {
-      await query('DELETE FROM job_postings WHERE id = $1', [jobId]);
+      await sql`DELETE FROM job_postings WHERE id = ${jobId}`;
       await fetchData();
     } catch (error) {
       console.error('Failed to delete job:', error);
@@ -79,7 +76,7 @@ export default function RecruiterDashboard() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
       </div>
     );
   }

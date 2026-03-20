@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Briefcase, DollarSign, MapPin, Tag, FileText, Plus, X } from 'lucide-react';
 import sql from './db';
-const query = sql;
 import { getStoredUser } from './auth';
 
 export default function PostJob() {
@@ -33,10 +32,9 @@ export default function PostJob() {
       }
 
       // Get recruiter ID
-      const recruiterResult = await query(
-        'SELECT id FROM recruiters WHERE profile_id = $1',
-        [user.userId]
-      );
+      const recruiterResult = await sql`
+        SELECT id FROM recruiters WHERE profile_id = ${user.userId}
+      `;
 
       if (recruiterResult.length === 0) {
         alert('You must be a recruiter to post jobs');
@@ -50,27 +48,25 @@ export default function PostJob() {
       const filteredBenefits = benefits.filter(b => b.trim());
 
       // Create job posting
-      await query(
-        `INSERT INTO job_postings (
+      await sql`
+        INSERT INTO job_postings (
           id, recruiter_id, title, company, location, job_type,
           salary_min, salary_max, description, requirements, benefits, status
         ) VALUES (
-          gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11
-        )`,
-        [
-          recruiterId,
-          formData.title,
-          formData.company,
-          formData.location,
-          formData.jobType,
-          formData.salaryMin ? parseInt(formData.salaryMin) : null,
-          formData.salaryMax ? parseInt(formData.salaryMax) : null,
-          formData.description,
-          filteredRequirements,
-          filteredBenefits.length > 0 ? filteredBenefits : null,
-          formData.status,
-        ]
-      );
+          ${crypto.randomUUID()}, 
+          ${recruiterId}, 
+          ${formData.title}, 
+          ${formData.company}, 
+          ${formData.location}, 
+          ${formData.jobType}, 
+          ${formData.salaryMin ? parseInt(formData.salaryMin) : null}, 
+          ${formData.salaryMax ? parseInt(formData.salaryMax) : null}, 
+          ${formData.description}, 
+          ${filteredRequirements}, 
+          ${filteredBenefits.length > 0 ? filteredBenefits : null}, 
+          ${formData.status}
+        )
+      `;
 
       alert('Job posted successfully!');
       navigate('/recruiter-dashboard');
@@ -288,7 +284,7 @@ export default function PostJob() {
                     value={benefit}
                     onChange={(e) => updateBenefit(index, e.target.value)}
                     className="flex-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                    placeholder="e.g., Health insurance"
+                    placeholder="e.g., Health Insurance"
                   />
                   {benefits.length > 1 && (
                     <button
@@ -304,34 +300,13 @@ export default function PostJob() {
             </div>
           </div>
 
-          <div className="bg-gray-800 p-6 rounded-lg border border-gray-700">
-            <h2 className="text-xl font-semibold text-white mb-4">Status</h2>
-            <select
-              value={formData.status}
-              onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-            >
-              <option value="active">Active - Visible to job seekers</option>
-              <option value="draft">Draft - Save for later</option>
-            </select>
-          </div>
-
-          <div className="flex gap-4">
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex-1 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-            >
-              {loading ? 'Posting...' : 'Post Job'}
-            </button>
-            <button
-              type="button"
-              onClick={() => navigate('/recruiter-dashboard')}
-              className="px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors font-medium"
-            >
-              Cancel
-            </button>
-          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-4 bg-purple-500 text-white font-bold rounded-lg hover:bg-purple-600 transition-colors disabled:opacity-50"
+          >
+            {loading ? 'Posting Job...' : 'Post Job Now'}
+          </button>
         </form>
       </div>
     </div>

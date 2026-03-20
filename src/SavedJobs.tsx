@@ -1,3 +1,4 @@
+import React from 'react';
 import { Heart, MapPin, DollarSign, Briefcase, ExternalLink, Trash2 } from 'lucide-react';
 import { useSavedJobs } from './SavedJobsContext';
 
@@ -13,7 +14,7 @@ export default function SavedJobs() {
   };
 
   return (
-    <div className="min-h-screen bg-neutral-900">
+    <div className="min-h-screen bg-gray-900">
       {/* Header */}
       <div className="bg-gradient-to-r from-purple-600 to-blue-500 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -32,13 +33,13 @@ export default function SavedJobs() {
         {loading ? (
           <div className="text-center py-12">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
-            <p className="mt-4 text-neutral-400">Loading saved jobs...</p>
+            <p className="mt-4 text-gray-400">Loading saved jobs...</p>
           </div>
         ) : savedJobs.length === 0 ? (
-          <div className="text-center py-12 bg-neutral-800 rounded-lg">
-            <Heart className="w-16 h-16 text-neutral-600 mx-auto mb-4" />
+          <div className="text-center py-12 bg-gray-800 rounded-lg">
+            <Heart className="w-16 h-16 text-gray-600 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-white mb-2">No saved jobs yet</h3>
-            <p className="text-neutral-400 mb-6">Start saving jobs you're interested in to view them here</p>
+            <p className="text-gray-400 mb-6">Start saving jobs you're interested in to view them here</p>
             <a
               href="/jobs"
               className="inline-block bg-gradient-to-r from-purple-600 to-blue-500 text-white px-6 py-3 rounded-lg font-medium hover:from-purple-700 hover:to-blue-600 transition-all"
@@ -51,12 +52,12 @@ export default function SavedJobs() {
             {savedJobs.map((job) => (
               <div
                 key={job.id}
-                className="bg-neutral-800 rounded-lg p-6 hover:shadow-xl transition-all border border-neutral-700 hover:border-purple-500/50"
+                className="bg-gray-800 rounded-lg p-6 hover:shadow-xl transition-all border border-gray-700 hover:border-purple-500/50"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold text-white mb-2">{job.job_title}</h3>
-                    <div className="flex items-center gap-2 text-neutral-300 mb-2">
+                    <div className="flex items-center gap-2 text-gray-300 mb-2">
                       <Briefcase className="w-4 h-4" />
                       <span>{job.company}</span>
                     </div>
@@ -67,17 +68,17 @@ export default function SavedJobs() {
                 </div>
 
                 <div className="space-y-2 mb-4">
-                  <div className="flex items-center gap-2 text-neutral-400">
+                  <div className="flex items-center gap-2 text-gray-400">
                     <MapPin className="w-4 h-4" />
                     <span>{job.location}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-neutral-400">
+                  <div className="flex items-center gap-2 text-gray-400">
                     <DollarSign className="w-4 h-4" />
                     <span>{job.salary_range}</span>
                   </div>
                 </div>
 
-                <div className="text-sm text-neutral-500 mb-4">
+                <div className="text-sm text-gray-500 mb-4">
                   Saved {new Date(job.saved_at).toLocaleDateString('en-US', {
                     month: 'short',
                     day: 'numeric',

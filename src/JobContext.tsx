@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import sql from './db';
 import { searchJobs, type AdzunaJob, type AdzunaSearchParams, formatJobType, formatSalaryRange } from './adzuna';
 import { useAuth } from './AuthContext';
@@ -55,7 +55,7 @@ export function JobProvider({ children }: { children: React.ReactNode }) {
         ORDER BY applied_at DESC
       `;
 
-      setApplications(result as Application[]);
+      setApplications(result as unknown as Application[]);
     } catch (error) {
       console.error('Error fetching applications:', error);
     } finally {
@@ -69,6 +69,8 @@ export function JobProvider({ children }: { children: React.ReactNode }) {
     try {
       const applicationId = crypto.randomUUID();
       const salaryRange = formatSalaryRange(job);
+      const companyName = typeof job.company === 'string' ? job.company : job.company.display_name;
+      const locationName = typeof job.location === 'string' ? job.location : job.location.display_name;
       
       await sql`
         INSERT INTO applications (
@@ -80,8 +82,8 @@ export function JobProvider({ children }: { children: React.ReactNode }) {
           ${job.id}, 
           ${user.userId}, 
           ${job.title},
-          ${job.company.display_name},
-          ${job.location.display_name},
+          ${companyName},
+          ${locationName},
           ${formatJobType(job)},
           ${salaryRange},
           ${job.redirect_url},

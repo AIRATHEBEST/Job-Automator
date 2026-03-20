@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Notification } from './database';
 import sql from './db';
-const query = sql;
 import { getStoredUser } from './auth';
 
 interface NotificationContextType {
@@ -24,10 +23,12 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       const user = await getStoredUser();
       if (!user) return;
 
-      const results = await query(
-        'SELECT * FROM notifications WHERE user_id = $1 ORDER BY created_at DESC LIMIT 50',
-        [user.userId]
-      ) as Notification[];
+      const results = await sql`
+        SELECT * FROM notifications 
+        WHERE user_id = ${user.userId} 
+        ORDER BY created_at DESC 
+        LIMIT 50
+      ` as unknown as Notification[];
 
       setNotifications(results);
       setUnreadCount(results.filter(n => !n.read).length);
@@ -38,7 +39,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
 
   const markAsRead = async (id: string) => {
     try {
-      await query('UPDATE notifications SET read = true WHERE id = $1', [id]);
+      await sql`UPDATE notifications SET read = true WHERE id = ${id}`;
       await fetchNotifications();
     } catch (error) {
       console.error('Failed to mark notification as read:', error);
@@ -50,7 +51,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
       const user = await getStoredUser();
       if (!user) return;
 
-      await query('UPDATE notifications SET read = true WHERE user_id = $1', [user.userId]);
+      await sql`UPDATE notifications SET read = true WHERE user_id = ${user.userId}`;
       await fetchNotifications();
     } catch (error) {
       console.error('Failed to mark all notifications as read:', error);
@@ -65,10 +66,10 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     link?: string
   ) => {
     try {
-      await query(
-        'INSERT INTO notifications (id, user_id, type, title, message, link) VALUES (gen_random_uuid(), $1, $2, $3, $4, $5)',
-        [userId, type, title, message, link || null]
-      );
+      await sql`
+        INSERT INTO notifications (id, user_id, type, title, message, link) 
+        VALUES (${crypto.randomUUID()}, ${userId}, ${type}, ${title}, ${message}, ${link || null})
+      `;
     } catch (error) {
       console.error('Failed to create notification:', error);
     }
