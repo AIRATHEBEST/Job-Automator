@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import sql from './db';
 import { hashPassword, verifyPassword, generateToken, getStoredToken, setStoredToken, removeStoredToken, verifyToken, TokenPayload } from './auth';
 import type { Profile } from './database';
@@ -7,6 +7,7 @@ interface AuthContextType {
   user: TokenPayload | null;
   profile: Omit<Profile, 'password_hash'> | null;
   loading: boolean;
+  error: string | null;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string, fullName: string) => Promise<void>;
   signOut: () => void;
@@ -19,21 +20,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<TokenPayload | null>(null);
   const [profile, setProfile] = useState<Omit<Profile, 'password_hash'> | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check for stored token on mount
     const initAuth = async () => {
-      const token = getStoredToken();
-      if (token) {
-        const payload = await verifyToken(token);
-        if (payload) {
-          setUser(payload);
-          await fetchProfile(payload.userId);
+      try {
+        const token = getStoredToken();
+        if (token) {
+          const payload = await verifyToken(token);
+          if (payload) {
+            setUser(payload);
+            await fetchProfile(payload.userId);
+          } else {
+            removeStoredToken();
+            setLoading(false);
+          }
         } else {
-          removeStoredToken();
           setLoading(false);
         }
-      } else {
+      } catch (err: any) {
+        console.error('Auth initialization failed:', err);
+        setError(err.message || 'Authentication failed to initialize');
         setLoading(false);
       }
     };
@@ -52,8 +59,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (result.length > 0) {
         setProfile(result[0] as Omit<Profile, 'password_hash'>);
       }
-    } catch (error) {
-      console.error('Error fetching profile:', error);
+    } catch (err: any) {
+      console.error('Error fetching profile:', err);
+      // Don't set global error here, just log it
     } finally {
       setLoading(false);
     }
@@ -71,32 +79,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error('Invalid email or password');
       }
 
-      const profile = result[0] as Profile;
-      const isValid = await verifyPassword(password, profile.password_hash);
+      const profileData = result[0] as Profile;
+      const isValid = await verifyPassword(password, profileData.password_hash);
 
       if (!isValid) {
         throw new Error('Invalid email or password');
       }
 
       const payload: TokenPayload = {
-        userId: profile.id,
-        email: profile.email,
-        isAdmin: profile.is_admin,
+        userId: profileData.id,
+        email: profileData.email,
+        isAdmin: profileData.is_admin,
       };
 
       const token = await generateToken(payload);
       setStoredToken(token);
       setUser(payload);
-      await fetchProfile(profile.id);
-    } catch (error) {
-      console.error('Sign in error:', error);
-      throw error;
+      await fetchProfile(profileData.id);
+    } catch (err: any) {
+      console.error('Sign in error:', err);
+      throw err;
     }
   };
 
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
-      // Check if user already exists
       const existing = await sql`
         SELECT id FROM profiles WHERE email = ${email}
       `;
@@ -123,9 +130,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setStoredToken(token);
       setUser(payload);
       await fetchProfile(userId);
-    } catch (error) {
-      console.error('Sign up error:', error);
-      throw error;
+    } catch (err: any) {
+      console.error('Sign up error:', err);
+      throw err;
     }
   };
 
@@ -160,14 +167,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       await sql(query, values);
       await fetchProfile(user.userId);
-    } catch (error) {
-      console.error('Update profile error:', error);
-      throw error;
+    } catch (err: any) {
+      console.error('Update profile error:', err);
+      throw err;
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+        <div className="bg-gray-800 border border-red-500/50 p-6 rounded-lg max-w-md w-full text-center">
+          <h2 className="text-xl font-bold text-red-500 mb-4">Initialization Error</h2>
+          <p className="text-gray-300 mb-6">{error}</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <AuthContext.Provider value={{ user, profile, loading, signIn, signUp, signOut, updateProfile }}>
+    <AuthContext.Provider value={{ user, profile, loading, error, signIn, signUp, signOut, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );
