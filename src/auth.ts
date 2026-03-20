@@ -22,8 +22,6 @@ async function sha256(message: string): Promise<string> {
 }
 
 export async function hashPassword(password: string): Promise<string> {
-  // Note: This is a simple hash for demonstration. In production, 
-  // sensitive operations like hashing should happen on a secure backend.
   return sha256(password);
 }
 
@@ -80,4 +78,17 @@ export function getStoredUser(): TokenPayload | null {
   } catch (e) {
     return null;
   }
+}
+
+// UUID fallback for older browsers
+export function generateUUID(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  // Fallback
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 }

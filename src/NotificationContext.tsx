@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Notification } from './database';
+import type { Notification } from './database';
 import sql from './db';
-import { getStoredUser } from './auth';
+import { getStoredUser, generateUUID } from './auth';
 
 interface NotificationContextType {
   notifications: Notification[];
@@ -68,7 +68,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     try {
       await sql`
         INSERT INTO notifications (id, user_id, type, title, message, link) 
-        VALUES (${crypto.randomUUID()}, ${userId}, ${type}, ${title}, ${message}, ${link || null})
+        VALUES (${generateUUID()}, ${userId}, ${type}, ${title}, ${message}, ${link || null})
       `;
     } catch (error) {
       console.error('Failed to create notification:', error);

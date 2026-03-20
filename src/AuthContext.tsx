@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import sql from './db';
-import { hashPassword, verifyPassword, generateToken, getStoredToken, setStoredToken, removeStoredToken, verifyToken, TokenPayload } from './auth';
+import { hashPassword, verifyPassword, generateToken, getStoredToken, setStoredToken, removeStoredToken, verifyToken, TokenPayload, generateUUID } from './auth';
 import type { Profile } from './database';
 
 interface AuthContextType {
@@ -51,7 +51,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const fetchProfile = async (userId: string) => {
     try {
       const result = await sql`
-        SELECT id, email, full_name, phone, resume_url, skills, experience_years, is_admin, created_at, updated_at
+        SELECT id, email, full_name, phone, resume_url, skills, experience_years, is_admin, role, created_at, updated_at
         FROM profiles
         WHERE id = ${userId}
       `;
@@ -61,7 +61,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     } catch (err: any) {
       console.error('Error fetching profile:', err);
-      // Don't set global error here, just log it
     } finally {
       setLoading(false);
     }
@@ -70,7 +69,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signIn = async (email: string, password: string) => {
     try {
       const result = await sql`
-        SELECT id, email, password_hash, is_admin
+        SELECT id, email, password_hash, is_admin, role
         FROM profiles
         WHERE email = ${email}
       `;
@@ -113,11 +112,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       const passwordHash = await hashPassword(password);
-      const userId = crypto.randomUUID();
+      const userId = generateUUID();
 
       await sql`
-        INSERT INTO profiles (id, email, password_hash, full_name, is_admin)
-        VALUES (${userId}, ${email}, ${passwordHash}, ${fullName}, false)
+        INSERT INTO profiles (id, email, password_hash, full_name, is_admin, role)
+        VALUES (${userId}, ${email}, ${passwordHash}, ${fullName}, false, 'job_seeker')
       `;
 
       const payload: TokenPayload = {

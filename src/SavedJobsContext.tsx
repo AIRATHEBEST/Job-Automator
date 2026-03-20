@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useAuth } from './AuthContext';
 import sql from './db';
+import { generateUUID } from './auth';
 import type { AdzunaJob } from './adzuna';
 
 interface SavedJob {
@@ -81,7 +82,7 @@ export function SavedJobsProvider({ children }: { children: ReactNode }) {
 
       await sql`
         INSERT INTO saved_jobs (id, user_id, job_id, job_title, company, location, job_type, salary_range, job_url)
-        VALUES (${crypto.randomUUID()}, ${user.userId}, ${job.id}, ${job.title}, ${companyName}, ${locationName}, ${jobType}, ${salaryRange}, ${job.redirect_url})
+        VALUES (${generateUUID()}, ${user.userId}, ${job.id}, ${job.title}, ${companyName}, ${locationName}, ${jobType}, ${salaryRange}, ${job.redirect_url})
         ON CONFLICT (user_id, job_id) DO NOTHING
       `;
 

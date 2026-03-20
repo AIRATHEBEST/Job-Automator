@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import sql from './db';
 import { searchJobs, type AdzunaJob, type AdzunaSearchParams, formatJobType, formatSalaryRange } from './adzuna';
 import { useAuth } from './AuthContext';
+import { generateUUID } from './auth';
 import type { Application } from './database';
 
 interface JobContextType {
@@ -67,7 +68,7 @@ export function JobProvider({ children }: { children: React.ReactNode }) {
     if (!user) throw new Error('Must be logged in to apply');
 
     try {
-      const applicationId = crypto.randomUUID();
+      const applicationId = generateUUID();
       const salaryRange = formatSalaryRange(job);
       const companyName = typeof job.company === 'string' ? job.company : job.company.display_name;
       const locationName = typeof job.location === 'string' ? job.location : job.location.display_name;
