@@ -14,11 +14,5 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ],
-  "env": {
-    "VITE_DATABASE_URL": "@neon_database_url",
-    "VITE_JWT_SECRET": "@jwt_secret",
-    "VITE_ADZUNA_APP_ID": "@adzuna_app_id",
-    "VITE_ADZUNA_API_KEY": "@adzuna_api_key"
-  }
+  ]
 }
