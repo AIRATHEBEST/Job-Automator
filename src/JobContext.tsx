@@ -119,8 +119,9 @@ export function JobProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    // Fetch jobs for everyone (jobs page is public)
+    fetchJobs();
     if (user) {
-      fetchJobs();
       fetchApplications();
     }
   }, [user]);
