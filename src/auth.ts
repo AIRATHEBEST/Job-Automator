@@ -80,6 +80,11 @@ export function getStoredUser(): TokenPayload | null {
   }
 }
 
+// Async alias to support `await getStoredUser()` usage in components
+export async function getStoredUserAsync(): Promise<TokenPayload | null> {
+  return getStoredUser();
+}
+
 // UUID fallback for older browsers
 export function generateUUID(): string {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
